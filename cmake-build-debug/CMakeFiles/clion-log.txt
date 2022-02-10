@@ -1,0 +1,4 @@
+"G:\IDE\Clion\CLion 2021.3.2\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=G:/IDE/Clion/CLion 2021.3.2/bin/ninja/win/ninja.exe" -DCMAKE_TOOLCHAIN_FILE=E:/src/vcpkg/scripts/buildsystems/vcpkg.cmake -G Ninja "G:\code\C or C++\physical_engine"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: G:/code/C or C++/physical_engine/cmake-build-debug
