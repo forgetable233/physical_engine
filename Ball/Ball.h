@@ -8,7 +8,7 @@
 #include "opencv2/opencv.hpp"
 #include"vector"
 #include"cmath"
-#define Gra 1											// 重力
+#define Gra 1											// gravity
 #define Pi 3.14159265
 #define Win_Height 500
 #define Win_Width 900
@@ -21,19 +21,19 @@ struct sag{Point be, end, dir;};
 
 class Ball
 {
-    cv::Point center;									//圆心位置
-    bool Building = true; vector<force> F;				//小球收到的所有外力
-    int R, Sx, Sy, weight;								//半径大小,速度定义为每一帧前进的量，此处默认为20ms一帧,速度分x，y，，，好算
-    bool flag1 = false, flag2 = false;					//判断是否发生了碰撞,分X与Y轴
+    cv::Point center;									//position of the R
+    bool Building = true; vector<force> F;				//all the force that the ball come across
+    int R, Sx, Sy, weight;								//the length of the R. the speed the weight
+    bool flag1 = false, flag2 = false;					//test whether the coll happened
 
 public:
     Ball() {};
 
     ~Ball();
 
-    Ball(Point C, int r, int m_Sx, int m_Sy);		//构造函数
+    Ball(Point C, int r, int m_Sx, int m_Sy);		//constructor function
 
-    int round_double(double number) { return (number > 0.0) ? (number + 0.5) : (number - 0.5); }
+    static int round_double(double number) { return (number > 0.0) ? (number + 0.5) : (number - 0.5); }
 
     Point Get_point(){return center;}
 

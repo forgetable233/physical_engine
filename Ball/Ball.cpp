@@ -6,7 +6,7 @@
 
 Ball::Ball(cv::Point C, int r, int m_Sx, int m_Sy){center = C;   R = r;  Sx = m_Sx;  Sy = m_Sy;   weight = r * 100;}
 
-void Ball::ReR(){R += 1;}//半径的增长函数
+void Ball::ReR(){R += 1;}
 
 void Ball::Out(){cout << this->center << ' ' << this->Sx << ' ' << this->Sy << endl;}//输出些数据，debug的时候用的
 
@@ -14,20 +14,16 @@ void Ball::EndBuild() { Building = false; weight = R * 10; F.push_back(force{ Gr
 
 void Ball::IsCollideWithBall(vector<Ball>::iterator b)
 {
-    //都为判断下一帧的位置，所有的判断碰撞都是判断的下一帧的位置,依次判断是否发生了碰撞，感觉要考虑一下速度过快的情况下穿过的问题，防止穿模
     double disx = ((double)this->center.x + (double)this->Sx) - ((double)(*b).center.x + (double)(*b).Sx);
     double disy = ((double)this->center.y + (double)this->Sy) - ((double)(*b).center.y + (double)(*b).Sy);
     double angle = atan(disy / disx);
     double dis = sqrt(disx * disx + disy * disy);
 
-    //为防止粘连现象的存在，要提前改变两者的位置
     if (dis < (double)this->R + (double)b->R)
     {
-        b->flag1 = b->flag2 = flag1 = flag2 = true;//这是考虑到碰撞瞬间外力看作无影响，加的两个判断x y方向的标志，由于x或y方向可能性太小，就直接弄上这个
-        /*防止粘连的代码：*/
+        b->flag1 = b->flag2 = flag1 = flag2 = true;
         cout << "Crash!!!" << endl;
         double OneBallNeedMove = (((double)this->R + (double)b->R) - dis) / 2;
-        /*此处的两个if的作用都是防止正在构建的发生碰撞*/
         if (this->Building)
         {
             b->flag1 = b->flag2 = true;
@@ -89,7 +85,6 @@ void Ball::IsCollideWithBall(vector<Ball>::iterator b)
 
 void Ball::IsCollidewithwall()
 {
-    /*判断是否有碰撞，此处只是最简单的与边框碰撞，在更新了速度之后再判断是否发生碰撞*/
     if (center.x + R + Sx >= Win_Width|| center.x - R + Sx <= 0){Sx = -Sx; flag1 = true;}
     if (center.x + R > Win_Width){center.x = Win_Width - R;}
     else if (center.x - R < 0){center.x = R;}
@@ -108,7 +103,6 @@ float* Ball::Fuc(Point axis)
 
 void Ball::Refresh()
 {
-    /*下面考虑加入力的因素，由此考虑所有的加速的影响，对所有力正交分解后再求和，此处未未发生碰撞时*/
     if (!Building)
     {
         double Fx = 0, Fy = 0, Ax, Ay;
@@ -120,14 +114,18 @@ void Ball::Refresh()
         Ax = round_double(Fx / weight);
         Ay = round_double(Fy / weight);
 
-        if (flag1 == false)
+        if (!flag1)
             Sx += Ax;
-        if (flag2 == false)
+        if (!flag2)
             Sy += Ay;
 
-        /*更新坐标位置*/
+        /*refresh the position of the point*/
         center.x += Sx, center.y += Sy;
         flag1 = flag2 = false;
     }
     flag1 = flag2 = false;
+}
+
+Ball::~Ball() {
+
 }

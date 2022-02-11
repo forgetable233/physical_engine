@@ -20,19 +20,19 @@ void on_mouse(int event, int x, int y, int flags, void *param) {
         while (1) {
             Mat temp = img.clone();
             A[A.size() - 1].ReR();
-            for (vector<Ball>::iterator it = A.begin(); it != A.end(); ++it) {
+            for (auto it = A.begin(); it != A.end(); ++it) {
                 (*it).Refresh();
                 circle(temp, (*it).Get_point(), (*it).Get_r(), Scalar(0, 0, 255), -1, 8, 0);
             }
-            for (vector<Ball>::iterator it = A.begin(); it != A.end(); ++it) {
-                for (vector<Ball>::iterator i = it + 1; i != A.end(); ++i) {
+            for (auto it = A.begin(); it != A.end(); ++it) {
+                for (auto i = it + 1; i != A.end(); ++i) {
                     (*i).IsCollideWithBall(it);
                 }
                 (*it).IsCollidewithwall();
             }
             imshow("temp", temp);
             waitKey(20);
-            if (flag == false)
+            if (!flag)
                 break;
         }
     }
@@ -43,7 +43,7 @@ void on_mouse(int event, int x, int y, int flags, void *param) {
 }
 
 int main() {
-    vector<Ball>::iterator it = A.begin();
+    auto it = A.begin();
     namedWindow("temp");
     imshow("temp", img);
 //    Rec R = Rec(Point(0, 0), 200, 300, 10);
