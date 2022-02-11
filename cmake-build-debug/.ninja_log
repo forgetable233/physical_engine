@@ -1,9 +1,0 @@
-# ninja log v5
-11	1402	6661906914678877	CMakeFiles/physical_engine.dir/Ball/Ball.cpp.obj	893913e87423152e
-1	1405	6661906914698831	CMakeFiles/physical_engine.dir/main.cpp.obj	6c45dec57882be9
-206	2101	6662712008847744	CMakeFiles/physical_engine.dir/Ball/Ball.cpp.obj	893913e87423152e
-2	2104	6662712008847744	CMakeFiles/physical_engine.dir/main.cpp.obj	6c45dec57882be9
-12	1313	6662714429277846	CMakeFiles/physical_engine.dir/Ball/Ball.cpp.obj	893913e87423152e
-1	1316	6662714429277846	CMakeFiles/physical_engine.dir/main.cpp.obj	6c45dec57882be9
-1	1255	6662714803055717	CMakeFiles/physical_engine.dir/Ball/Ball.cpp.obj	893913e87423152e
-1256	2599	6662714807373792	physical_engine.exe	fa1d25a95235322d
