@@ -126,6 +126,4 @@ void Ball::Refresh()
     flag1 = flag2 = false;
 }
 
-Ball::~Ball() {
-
-}
+Ball::~Ball() = default;

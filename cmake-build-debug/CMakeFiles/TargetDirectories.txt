@@ -1,0 +1,3 @@
+G:/code/C or C++/physical_engine/cmake-build-debug/CMakeFiles/physical_engine.dir
+G:/code/C or C++/physical_engine/cmake-build-debug/CMakeFiles/edit_cache.dir
+G:/code/C or C++/physical_engine/cmake-build-debug/CMakeFiles/rebuild_cache.dir
