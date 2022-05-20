@@ -5,39 +5,35 @@
 #ifndef PHYSICAL_ENGINE_BALL_H
 #define PHYSICAL_ENGINE_BALL_H
 
-#include "opencv2/opencv.hpp"
-#include"vector"
-#include"cmath"
-#define Gra 1											// gravity
-#define Pi 3.14159265
-#define Win_Height 500
-#define Win_Width 900
+#include "../object.h"
 
 using namespace std;
 using namespace cv;
+struct sag {
+    Point be, end, dir;
+};
 
-struct force{int N, arc;};
-struct sag{Point be, end, dir;};
+class Ball : public object{
+    int R{};                                //the length of the R. the speed the weight
 
-class Ball
-{
-    cv::Point center;									//position of the R
-    bool Building = true; vector<force> F;				//all the force that the ball come across
-    int R, Sx, Sy, weight;								//the length of the R. the speed the weight
-    bool flag1 = false, flag2 = false;					//test whether the coll happened
+    double speedX{};
+    double speedY{};
+
+    bool flag1 = false;                    //test whether the coll happened
+    bool flag2 = false;
 
 public:
-    Ball() {};
+    Ball() = default;;
 
     ~Ball();
 
-    Ball(Point C, int r, int m_Sx, int m_Sy);		//constructor function
+    Ball(Point C, int r, int m_Sx, int m_Sy);        //constructor function
 
     static int round_double(double number) { return (number > 0.0) ? (number + 0.5) : (number - 0.5); }
 
-    Point Get_point(){return center;}
+    Point Get_point() { return center; }
 
-    int Get_r(){return R;}
+    int Get_r() { return R; }
 
     void IsCollideWithBall(vector<Ball>::iterator b);
 
@@ -51,15 +47,15 @@ public:
 
     void Out();
 
-    float* Fuc(Point axis);
+    float *Fuc(Point axis);
 
-    int Get_Sx() { return Sx; }
+    int Get_Sx() { return speedX; }
 
-    int Get_Sy() { return Sy; }
+    int Get_Sy() { return speedY; }
 
     int Get_Weight() { return weight; }
 
-    void Change_Speed(int m_Sx, int m_Sy) { Sx = m_Sx, Sy = m_Sy; }
+    void Change_Speed(int m_Sx, int m_Sy) { speedX = m_Sx, speedY = m_Sy; }
 
 };
 

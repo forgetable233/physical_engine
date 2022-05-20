@@ -79,7 +79,7 @@ int main() {
             circle(temp, (*it).Get_point(), (*it).Get_r(), Scalar(0, 0, 255), -1, 8, 0);
         }
         for (it = A.begin(); it != A.end(); ++it) {
-            for (vector<Ball>::iterator i = it + 1; i != A.end(); ++i) {
+            for (auto i = it + 1; i != A.end(); ++i) {
                 (*i).IsCollideWithBall(it);
             }
             (*it).IsCollidewithwall();

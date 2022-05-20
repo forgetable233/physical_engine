@@ -7,6 +7,6 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 
-add_executable(physical_engine main.cpp Ball/Ball.cpp Ball/Ball.h)
+add_executable(physical_engine main.cpp Ball/Ball.cpp Ball/Ball.h object.cpp object.h)
 
 target_link_libraries(physical_engine ${OpenCV_LIBS})

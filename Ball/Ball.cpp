@@ -4,123 +4,125 @@
 
 #include "Ball.h"
 
-Ball::Ball(cv::Point C, int r, int m_Sx, int m_Sy){center = C;   R = r;  Sx = m_Sx;  Sy = m_Sy;   weight = r * 100;}
+Ball::Ball(cv::Point C, int r, int m_Sx, int m_Sy) : object(C) {
+    R = r;
+    speedX = m_Sx;
+    speedY = m_Sy;
+    weight = r * 100;
+}
 
-void Ball::ReR(){R += 1;}
+void Ball::ReR() { R += 1; }
 
-void Ball::Out(){cout << this->center << ' ' << this->Sx << ' ' << this->Sy << endl;}//输出些数据，debug的时候用的
+void Ball::Out() { cout << this->center << ' ' << this->speedX << ' ' << this->speedY << endl; }//输出些数据，debug的时候用的
 
-void Ball::EndBuild() { Building = false; weight = R * 10; F.push_back(force{ Gra * weight, 90 }); }
+void Ball::EndBuild() {
+    building = false;
+    weight = R * 10;
+    F.push_back(force{Gra * weight, 90});
+}
 
-void Ball::IsCollideWithBall(vector<Ball>::iterator b)
-{
-    double disx = ((double)this->center.x + (double)this->Sx) - ((double)(*b).center.x + (double)(*b).Sx);
-    double disy = ((double)this->center.y + (double)this->Sy) - ((double)(*b).center.y + (double)(*b).Sy);
+void Ball::IsCollideWithBall(vector<Ball>::iterator b) {
+    double disx = ((double) this->center.x + (double) this->speedX) - ((double) (*b).center.x + (double) (*b).speedX);
+    double disy = ((double) this->center.y + (double) this->speedY) - ((double) (*b).center.y + (double) (*b).speedY);
     double angle = atan(disy / disx);
     double dis = sqrt(disx * disx + disy * disy);
 
-    if (dis < (double)this->R + (double)b->R)
-    {
+    if (dis < (double) this->R + (double) b->R) {
         b->flag1 = b->flag2 = flag1 = flag2 = true;
         cout << "Crash!!!" << endl;
-        double OneBallNeedMove = (((double)this->R + (double)b->R) - dis) / 2;
-        if (this->Building)
-        {
+        double OneBallNeedMove = (((double) this->R + (double) b->R) - dis) / 2;
+        if (this->building) {
             b->flag1 = b->flag2 = true;
-            b->Sx = -b->Sx;
-            b->Sy = -b->Sy;
-            if (b->center.x + b->Sx >= this->center.x + this->Sx)
-            {
-                b->center.x += OneBallNeedMove * 2 * cos(angle);
-                b->center.y += OneBallNeedMove * 2 * sin(angle);
-            }
-            else
-            {
-                b->center.x -= OneBallNeedMove * 2 * cos(angle);
-                b->center.y -= OneBallNeedMove * 2 * sin(angle);
+            b->speedX = -b->speedX;
+            b->speedY = -b->speedY;
+            if (b->center.x + b->speedX >= this->center.x + this->speedX) {
+                b->center.x += static_cast<int>(OneBallNeedMove * 2 * cos(angle));
+                b->center.y += static_cast<int>(OneBallNeedMove * 2 * sin(angle));
+            } else {
+                b->center.x -= static_cast<int>(OneBallNeedMove * 2 * cos(angle));
+                b->center.y -= static_cast<int>(OneBallNeedMove * 2 * sin(angle));
             }
             return;
         }
-        if (b->Building)
-        {
+        if (b->building) {
             this->flag1 = this->flag2 = true;
-            this->Sx = -this->Sx;//更新速度
-            this->Sy = -this->Sy;
-            if ((b->center.x + b->Sx) >= (this->center.x + this->Sx))
-            {
-                this->center.x += OneBallNeedMove * 2 * cos(angle);
-                this->center.y += OneBallNeedMove * 2 * sin(angle);
-            }
-            else
-            {
-                this->center.x -= OneBallNeedMove * 2 * cos(angle);
-                this->center.y -= OneBallNeedMove * 2 * sin(angle);
+            this->speedX = -this->speedX;//更新速度
+            this->speedY = -this->speedY;
+            if ((b->center.x + b->speedX) >= (this->center.x + this->speedX)) {
+                this->center.x += static_cast<int>(OneBallNeedMove * 2 * cos(angle));
+                this->center.y += static_cast<int>(OneBallNeedMove * 2 * sin(angle));
+            } else {
+                this->center.x -= static_cast<int>(OneBallNeedMove * 2 * cos(angle));
+                this->center.y -= static_cast<int>(OneBallNeedMove * 2 * sin(angle));
             }
             return;
         }
-        if ((b->center.x + b->Sx) >= (this->center.x + this->Sx))
-        {
-            this->center.x -= OneBallNeedMove * cos(angle);
-            this->center.y -= OneBallNeedMove * sin(angle);
-            b->center.x += OneBallNeedMove * cos(angle);
-            b->center.y += OneBallNeedMove * sin(angle);
-        }
-        else
-        {
-            this->center.x += OneBallNeedMove * cos(angle);
-            this->center.y += OneBallNeedMove * sin(angle);
-            b->center.x -= OneBallNeedMove * cos(angle);
-            b->center.y -= OneBallNeedMove * sin(angle);
+        if ((b->center.x + b->speedX) >= (this->center.x + this->speedX)) {
+            this->center.x -= static_cast<int>(OneBallNeedMove * cos(angle));
+            this->center.y -= static_cast<int>(OneBallNeedMove * sin(angle));
+            b->center.x += static_cast<int>(OneBallNeedMove * cos(angle));
+            b->center.y += static_cast<int>(OneBallNeedMove * sin(angle));
+        } else {
+            this->center.x += static_cast<int>(OneBallNeedMove * cos(angle));
+            this->center.y += static_cast<int>(OneBallNeedMove * sin(angle));
+            b->center.x -= static_cast<int>(OneBallNeedMove * cos(angle));
+            b->center.y -= static_cast<int>(OneBallNeedMove * sin(angle));
         }
         /*更新速度*/
 
-        double x1 = this->Sx * cos(angle) + this->Sy * sin(angle), x2 = b->Sx * cos(angle) + b->Sy * sin(angle);					//正交后计算
-        double y1 = -this->Sx * sin(angle) + this->Sy * cos(angle), y2 = -b->Sx * sin(angle) + b->Sy * cos(angle);
-        double X1 = (((double)this->weight - (double)(*b).weight) * x1 + 2 * (double)(*b).weight * x2) / ((double)this->weight + (double)(*b).weight);
-        double X2 = (((double)(*b).weight - (double)this->weight) * x2 + 2 * (double)this->weight * x1) / ((double)this->weight + (double)(*b).weight);
-        this->Sx = X1 * cos(angle) - y1 * sin(angle), b->Sx = X2 * cos(angle) - y2 * sin(angle);
-        this->Sy = X1 * sin(angle) + y1 * cos(angle), b->Sy = X2 * sin(angle) + y2 * cos(angle);
+        double x1 = this->speedX * cos(angle) + this->speedY * sin(angle), x2 =
+                b->speedX * cos(angle) + b->speedY * sin(angle);                    //正交后计算
+        double y1 = -this->speedX * sin(angle) + this->speedY * cos(angle), y2 = -b->speedX * sin(angle) + b->speedY * cos(angle);
+        double X1 = (((double) this->weight - (double) (*b).weight) * x1 + 2 * (double) (*b).weight * x2) /
+                    ((double) this->weight + (double) (*b).weight);
+        double X2 = (((double) (*b).weight - (double) this->weight) * x2 + 2 * (double) this->weight * x1) /
+                    ((double) this->weight + (double) (*b).weight);
+        this->speedX = X1 * cos(angle) - y1 * sin(angle), b->speedX = X2 * cos(angle) - y2 * sin(angle);
+        this->speedY = X1 * sin(angle) + y1 * cos(angle), b->speedY = X2 * sin(angle) + y2 * cos(angle);
     }
 }
 
-void Ball::IsCollidewithwall()
-{
-    if (center.x + R + Sx >= Win_Width|| center.x - R + Sx <= 0){Sx = -Sx; flag1 = true;}
-    if (center.x + R > Win_Width){center.x = Win_Width - R;}
-    else if (center.x - R < 0){center.x = R;}
-    if (center.y + R + Sy >= Win_Height || center.y - R + Sy <= 0){Sy = -Sy;flag2 = true;}
-    if (center.y + R > Win_Height){center.y = Win_Height - R;}
-    else if (center.y - R < 0){center.y = R;}
+void Ball::IsCollidewithwall() {
+    if (center.x + R + speedX >= Win_Width || center.x - R + speedX <= 0) {
+        speedX = -speedX;
+        flag1 = true;
+    }
+    if (center.x + R > Win_Width) { center.x = Win_Width - R; }
+    else if (center.x - R < 0) { center.x = R; }
+    if (center.y + R + speedY >= Win_Height || center.y - R + speedY <= 0) {
+        speedY = -speedY;
+        flag2 = true;
+    }
+    if (center.y + R > Win_Height) { center.y = Win_Height - R; }
+    else if (center.y - R < 0) { center.y = R; }
 }
 
-float* Ball::Fuc(Point axis)
-{
-    float a = axis.x * center.x + axis.y * center.y;
-    float* B = new float[2];
+float *Ball::Fuc(Point axis) {
+    double a = static_cast<double>(axis.x * center.x + axis.y * center.y);
+    auto *B = new float[2];
     B[0] = a - R, B[1] = a + R;
     return B;
 }
 
-void Ball::Refresh()
-{
-    if (!Building)
-    {
+void Ball::Refresh() {
+    if (!building) {
         double Fx = 0, Fy = 0, Ax, Ay;
-        for (int i = 0; i < F.size(); i++)
-        {
-            Fx += F[i].N * cos(F[i].arc * Pi / 180);
-            Fy += F[i].N * sin(F[i].arc * Pi / 180);
+        for (auto & i : F) {
+            Fx += i.F * cos(i.angle * M_PI / 180);
+            Fy += i.F * sin(i.angle * M_PI / 180);
         }
         Ax = round_double(Fx / weight);
         Ay = round_double(Fy / weight);
 
-        if (!flag1)
-            Sx += Ax;
-        if (!flag2)
-            Sy += Ay;
+        if (!flag1) {
+            speedX += static_cast<int>(Ax);
+        }
+        if (!flag2) {
+            speedY += static_cast<int>(Ay);
+        }
 
         /*refresh the position of the point*/
-        center.x += Sx, center.y += Sy;
+        center.x += speedX, center.y += speedY;
         flag1 = flag2 = false;
     }
     flag1 = flag2 = false;
